@@ -80,7 +80,11 @@ const Navbar: React.FC = () => {
               <Typography variant="body2">Welcome, {user.name}</Typography>
             </MenuItem>
           )}
-          <MenuItem onClick={() => navigateTo('/dashboard')}>Dashboard</MenuItem>
+          {user?.role === 'admin' ? (
+            <MenuItem onClick={() => navigateTo('/admin')}>Admin Dashboard</MenuItem>
+          ) : (
+            <MenuItem onClick={() => navigateTo('/dashboard')}>Dashboard</MenuItem>
+          )}
           <MenuItem onClick={() => navigateTo('/task-form')}>Add Task</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </>
@@ -137,9 +141,20 @@ const Navbar: React.FC = () => {
                     </Typography>
                   </Box>
                 )}
-                <Button color="inherit" onClick={() => navigate('/dashboard')}>
-                  Dashboard
-                </Button>
+                {user?.role === 'admin' ? (
+                  <Button 
+                    color="inherit" 
+                    onClick={() => navigate('/admin')}
+                    variant="outlined"
+                    sx={{ mr: 1 }}
+                  >
+                    Admin Dashboard
+                  </Button>
+                ) : (
+                  <Button color="inherit" onClick={() => navigate('/dashboard')}>
+                    Dashboard
+                  </Button>
+                )}
                 <Button color="inherit" onClick={() => navigate('/task-form')}>
                   Add Task
                 </Button>

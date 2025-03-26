@@ -15,13 +15,16 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  async findAll(): Promise<Task[]> {
-    return this.tasksService.findAll();
+  async findAll(@CurrentUser() user: any): Promise<Task[]> {
+    return this.tasksService.findAll(user.id, user.role);
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Task> {
-    return this.tasksService.findOne(id);
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() user: any
+  ): Promise<Task> {
+    return this.tasksService.findOne(id, user.id, user.role);
   }
 
   @Post()
@@ -36,8 +39,9 @@ export class TasksController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateTaskDto: UpdateTaskDto,
+    @CurrentUser() user: any,
   ): Promise<Task> {
-    return this.tasksService.update(id, updateTaskDto);
+    return this.tasksService.update(id, updateTaskDto, user.id, user.role);
   }
 
   @Delete(':id')

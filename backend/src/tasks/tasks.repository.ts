@@ -20,6 +20,15 @@ export class TasksRepository {
     });
   }
 
+  async findAllByUserId(userId: number): Promise<Task[]> {
+    return this.taskRepository.find({
+      where: { userId },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+  }
+
   async findOne(id: number): Promise<Task | null> {
     return this.taskRepository.findOne({ where: { id } });
   }
